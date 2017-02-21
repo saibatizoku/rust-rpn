@@ -3,7 +3,8 @@ enum Operator {
   Substraction,
   Multiplication,
   Division,
-  Modulo
+  Modulo,
+  Power
 }
 
 enum OperationElt {
@@ -20,6 +21,7 @@ fn tokenizer(expr: &str) -> Result<Vec<OperationElt>, String> {
         "*" => Ok(OperationElt::Operator(Operator::Multiplication)),
         "/" => Ok(OperationElt::Operator(Operator::Division)),
         "%" => Ok(OperationElt::Operator(Operator::Modulo)),
+        "^" => Ok(OperationElt::Operator(Operator::Power)),
         operand => match operand.parse::<f32>() {
           Ok(val) => Ok(OperationElt::Operand(val)),
           Err(_) => Err(format!("Cannot parse operand \"{}\"", operand))
@@ -63,7 +65,8 @@ pub fn evaluate(expr: &str) -> Result<f32, String> {
               Operator::Substraction    => operand1 - operand2,
               Operator::Multiplication  => operand1 * operand2,
               Operator::Division        => operand1 / operand2,
-              Operator::Modulo          => operand1 % operand2
+              Operator::Modulo          => operand1 % operand2,
+              Operator::Power           => operand1.powf(operand2)
             };
             stack.push(result);
           },
@@ -107,6 +110,12 @@ fn it_divides() {
 fn it_modulos() {
   let result = evaluate("4 2 %");
   assert_eq!(result.unwrap(), 0.0);
+}
+
+#[test]
+fn it_powers() {
+  let result = evaluate("4 0 ^");
+  assert_eq!(result.unwrap(), 1.0);
 }
 
 #[test]
