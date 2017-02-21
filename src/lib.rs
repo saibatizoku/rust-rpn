@@ -120,9 +120,9 @@ fn it_powers() {
 
 #[test]
 fn it_evaluates_complex_expressions() {
-  // ((1+2) * 8 / (5-1) - 4 % 3) / 2
-  let result = evaluate("1 2 + 8 * 5 1 - / 4 3 % - 2 /");
-  assert_eq!(result.unwrap(), 2.5);
+  // (((1+2) * 8 / (5-1) - 4 % 3) / 2) ^ 2
+  let result = evaluate("1 2 + 8 * 5 1 - / 4 3 % - 2 / 2 ^");
+  assert_eq!(result.unwrap(), 6.25);
 }
 
 #[test]
