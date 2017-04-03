@@ -4,7 +4,8 @@ enum Operator {
   Multiplication,
   Division,
   Modulo,
-  Power
+  Power,
+  Atan2
 }
 
 enum OperationElt {
@@ -22,6 +23,7 @@ fn tokenizer(expr: &str) -> Result<Vec<OperationElt>, String> {
         "/" => Ok(OperationElt::Operator(Operator::Division)),
         "%" => Ok(OperationElt::Operator(Operator::Modulo)),
         "^" => Ok(OperationElt::Operator(Operator::Power)),
+        "atan2" => Ok(OperationElt::Operator(Operator::Atan2)),
         operand => match operand.parse::<f32>() {
           Ok(val) => Ok(OperationElt::Operand(val)),
           Err(_) => Err(format!("Cannot parse operand \"{}\"", operand))
@@ -66,7 +68,8 @@ pub fn evaluate(expr: &str) -> Result<f32, String> {
               Operator::Multiplication  => operand1 * operand2,
               Operator::Division        => operand1 / operand2,
               Operator::Modulo          => operand1 % operand2,
-              Operator::Power           => operand1.powf(operand2)
+              Operator::Power           => operand1.powf(operand2),
+              Operator::Atan2            => operand1.atan2(operand2)
             };
             stack.push(result);
           },
@@ -116,6 +119,13 @@ fn it_modulos() {
 fn it_powers() {
   let result = evaluate("4 0 ^");
   assert_eq!(result.unwrap(), 1.0);
+}
+
+#[test]
+fn it_arctans() {
+  // atan2(y/x)
+  let result = evaluate("4 7 atan2");
+  assert_eq!(result.unwrap(), 0.51914614);
 }
 
 #[test]
