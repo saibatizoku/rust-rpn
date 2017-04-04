@@ -69,7 +69,7 @@ pub fn evaluate(expr: &str) -> Result<f32, String> {
               Operator::Division        => operand1 / operand2,
               Operator::Modulo          => operand1 % operand2,
               Operator::Power           => operand1.powf(operand2),
-              Operator::Atan2            => operand1.atan2(operand2)
+              Operator::Atan2           => operand1.atan2(operand2)
             };
             stack.push(result);
           },
